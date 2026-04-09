@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Root element styles */
+:root {
+  --color-gold: #FCD34D;
+  --color-gold-light: #FFFACD;
+  --color-purple-dark: #1a0033;
+  --color-purple: #581C87;
+  --color-blue-dark: #001a4d;
+  --color-black: #000000;
+  --color-black-light: #0a0a0a;
+  --color-gray-light: #e0e0e0;
+}
+
+/* Base typography */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  @apply bg-black text-white;
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+}
+
+/* Headings */
+h1 {
+  @apply text-5xl md:text-6xl font-bold;
+}
+
+h2 {
+  @apply text-4xl md:text-5xl font-bold;
+}
+
+h3 {
+  @apply text-2xl md:text-3xl font-bold;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(250, 204, 21, 0.8);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* Component animations */
+.animate-fade-in {
+  animation: fadeIn 1s ease-out;
+}
+
+.animate-glow-pulse {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+.animate-slide-in-down {
+  animation: slideInDown 0.5s ease-out;
+}
+
+/* Utility classes */
+.gold-text {
+  @apply text-yellow-400;
+}
+
+.gold-border {
+  @apply border-yellow-600/30;
+}
+
+.glow-gold {
+  box-shadow: 0 0 30px rgba(250, 204, 21, 0.5);
+}
+
+.glow-gold-lg {
+  box-shadow: 0 0 50px rgba(250, 204, 21, 0.8), 0 0 80px rgba(139, 92, 246, 0.4);
+}
+
+.glow-purple {
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+}
+
+.backdrop-dark {
+  @apply bg-black/50 backdrop-blur-sm;
+}
+
+.text-shadow-glow {
+  text-shadow: 0 0 30px rgba(250, 204, 21, 0.5), 0 0 60px rgba(139, 92, 246, 0.3);
+}
+
+.text-shadow-sm {
+  text-shadow: 0 0 15px rgba(250, 204, 21, 0.3);
+}
+
+/* Button resets and custom styles */
+button {
+  @apply transition-all duration-300 ease-out cursor-pointer;
+}
+
+button:focus {
+  @apply outline-none ring-2 ring-yellow-400 ring-offset-2 ring-offset-black;
+}
+
+/* Link styles */
+a {
+  @apply transition-colors duration-300;
+}
+
+a:focus {
+  @apply outline-none ring-2 ring-yellow-400 ring-offset-2 ring-offset-black rounded;
+}
+
+/* Scrollbar styling (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(250, 204, 21, 0.3);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(250, 204, 21, 0.6);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-color: rgba(250, 204, 21, 0.3) transparent;
+  scrollbar-width: thin;
+}
+
+/* Selection styles */
+::selection {
+  @apply bg-yellow-400 text-black;
+}
+
+::-moz-selection {
+  @apply bg-yellow-400 text-black;
+}
+
+/* Placeholder styles */
+::placeholder {
+  @apply text-gray-500;
+}
+
+/* Form inputs */
+input, textarea, select {
+  @apply bg-black/50 border border-yellow-600/30 rounded px-4 py-2 text-white;
+}
+
+input:focus, textarea:focus, select:focus {
+  @apply border-yellow-400 outline-none ring-2 ring-yellow-400/20;
+}
+
+/* Media queries for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    @apply bg-white text-black;
+  }
+
+  a {
+    @apply underline;
+  }
+
+  button {
+    @apply print:hidden;
+  }
+}

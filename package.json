@@ -1,0 +1,65 @@
+{
+  "name": "oathbound-website",
+  "version": "1.0.0",
+  "description": "Official website for Oathbound: The Ten Trials - A medieval fantasy 2D action-platformer",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write .",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "lucide-react": "^0.294.0",
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.54.0",
+    "eslint-config-next": "^14.0.0",
+    "postcss": "^8.4.31",
+    "prettier": "^3.1.0",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": "18.x || 20.x",
+    "npm": "9.x || 10.x"
+  },
+  "keywords": [
+    "game",
+    "website",
+    "platformer",
+    "rpg",
+    "fantasy",
+    "medieval",
+    "indie-game",
+    "react",
+    "next.js",
+    "tailwind-css"
+  ],
+  "authors": [
+    {
+      "name": "Adhirath"
+    },
+    {
+      "name": "Avantika"
+    },
+    {
+      "name": "Sheeenz"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/oathbound"
+  },
+  "homepage": "https://oathbound-game.com"
+}
