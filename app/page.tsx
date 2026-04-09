@@ -748,7 +748,7 @@ export default function OathboundWebsite() {
           </p>
           <div className="pt-8 border-t border-white/10 text-[8px] text-gray-600 leading-loose">
             <p>
-              © 2024 Oathbound: The Ten Trials. Adhirath, Avantika, & Sheeenz.
+              © 2026 Oathbound: The Ten Trials. Adhirath, Afsheen, Anagha & Avantika.
             </p>
           </div>
         </div>
