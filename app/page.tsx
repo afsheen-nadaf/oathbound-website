@@ -9,37 +9,15 @@ export default function OathboundWebsite() {
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    // 1. Navbar Scroll State
+    // Navbar Scroll State
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
 
-    // 2. Intersection Observer for Epic Slide-Up Animations
-    const observerOptions = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.15, // Triggers when 15% of the element is visible
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-revealed");
-          // We unobserve so the animation only plays once per scroll down
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
-    // Attach observer to all elements with the 'reveal-on-scroll' class
-    const revealElements = document.querySelectorAll(".reveal-on-scroll");
-    revealElements.forEach((el) => observer.observe(el));
-
-    // Cleanup listeners on unmount
+    // Cleanup listener on unmount
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      observer.disconnect();
     };
   }, []);
 
@@ -128,10 +106,12 @@ export default function OathboundWebsite() {
 
   const colors = {
     obsidian: "#000000",
-    bruisedPurple: "#2E0854",
-    maliciousRed: "#FF0000",
+    bruisedPurple: "#581c87", // Warmed up to a fuchsia/plum dark tone
+    maliciousRed: "#FF0000", // Kept primarily for the villain's lore specifically
     stoneGrey: "#4F4F4F",
     heroicGold: "#FFD700",
+    neonViolet: "#d946ef", // Warm fuchsia/magenta glow
+    deepViolet: "#4a044e", // Deep warm plum overlay
   };
 
   return (
@@ -170,7 +150,7 @@ export default function OathboundWebsite() {
                 className="text-2xl md:text-5xl font-pixel mb-8 z-10 animate-pulse"
                 style={{
                   color: colors.heroicGold,
-                  textShadow: `4px 4px 0px ${colors.maliciousRed}`,
+                  textShadow: `4px 4px 0px ${colors.neonViolet}`,
                 }}
               >
                 INSERT COIN
@@ -209,25 +189,25 @@ export default function OathboundWebsite() {
           <div className="hidden md:flex gap-8 text-[10px] tracking-widest uppercase">
             <a
               href="#about"
-              className="transition-colors hover:text-yellow-400"
+              className="transition-colors hover:text-fuchsia-400"
             >
               The Story
             </a>
             <a
               href="#heroes"
-              className="transition-colors hover:text-yellow-400"
+              className="transition-colors hover:text-fuchsia-400"
             >
               The Heroes
             </a>
             <a
               href="#villain"
-              className="transition-colors hover:text-yellow-400"
+              className="transition-colors hover:text-fuchsia-400"
             >
               The Threat
             </a>
             <a
               href="#how-to-play"
-              className="transition-colors hover:text-yellow-400"
+              className="transition-colors hover:text-fuchsia-400"
             >
               How to Play
             </a>
@@ -246,23 +226,33 @@ export default function OathboundWebsite() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center pt-20">
+      <section className="relative min-h-screen flex flex-col items-center justify-center pt-20 overflow-hidden">
+        {/* Custom Throne Room Image Background */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat pixelated"
           style={{
-            background: `linear-gradient(to bottom, ${colors.bruisedPurple}, ${colors.obsidian})`,
+            backgroundImage:
+              "url('/bg.jpg')",
           }}
         />
-        <div className="absolute inset-0 pixel-stars opacity-40 animate-pan-stars"></div>
-        <div className="absolute inset-0 pixel-retro-bg opacity-20 animate-pan-retro"></div>
 
+        {/* Deep Warm Violet Overlay to neutralize redness and shift to a magical warm purple hue */}
+        <div className="absolute inset-0 bg-[#4a044e]/70 z-0 mix-blend-multiply"></div>
+        {/* Secondary dark overlay to keep text readable */}
+        <div className="absolute inset-0 bg-black/50 z-0"></div>
+
+        {/* Dynamic Star and Retro overlays lowered in opacity */}
+        <div className="absolute inset-0 pixel-stars opacity-30 animate-pan-stars z-0"></div>
+        <div className="absolute inset-0 pixel-retro-bg opacity-10 animate-pan-retro z-0"></div>
+
+        {/* The Ominous Glow - Neon Warm Violet glow */}
         <div
-          className="absolute top-1/4 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] rounded-full blur-[120px] animate-pulse-slow opacity-30"
-          style={{ backgroundColor: colors.maliciousRed }}
+          className="absolute top-1/4 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] rounded-full blur-[120px] animate-pulse-slow opacity-40 z-0"
+          style={{ backgroundColor: colors.neonViolet }}
         />
 
-        <div className="relative z-10 text-center px-6 animate-fade-in flex flex-col items-center">
-          <p className="text-[10px] md:text-xs text-gray-400 tracking-[0.3em] uppercase mb-8 leading-loose animate-float-slow">
+        <div className="relative z-10 text-center px-6 animate-fade-in flex flex-col items-center drop-shadow-xl">
+          <p className="text-[10px] md:text-xs text-gray-300 tracking-[0.3em] uppercase mb-8 leading-loose animate-float-slow">
             Strength Through Reunion
           </p>
 
@@ -270,7 +260,7 @@ export default function OathboundWebsite() {
             className="text-5xl md:text-8xl lg:text-9xl font-pixel font-bold mb-8 leading-tight drop-shadow-2xl text-center hover:scale-105 transition-transform duration-500"
             style={{
               color: colors.heroicGold,
-              textShadow: `0 0 30px ${colors.heroicGold}80, 0 0 60px ${colors.maliciousRed}60`,
+              textShadow: `0 0 30px ${colors.heroicGold}80, 0 0 60px ${colors.neonViolet}80`,
             }}
           >
             OATHBOUND
@@ -302,7 +292,7 @@ export default function OathboundWebsite() {
                 boxShadow: `0 0 20px ${colors.heroicGold}80`,
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = `0 0 40px ${colors.heroicGold}, 0 0 60px ${colors.maliciousRed}80`;
+                e.currentTarget.style.boxShadow = `0 0 40px ${colors.heroicGold}, 0 0 60px ${colors.neonViolet}80`;
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.boxShadow = `0 0 20px ${colors.heroicGold}80`;
@@ -332,13 +322,25 @@ export default function OathboundWebsite() {
       {/* Story Section */}
       <section
         id="about"
-        className="relative py-24 px-6 border-t border-white/10"
+        className="relative py-24 px-6 border-t border-white/10 overflow-hidden"
         style={{ backgroundColor: colors.obsidian }}
       >
-        <div className="absolute inset-0 pixel-retro-bg opacity-[0.03] animate-pan-retro"></div>
+        <div className="absolute inset-0 pixel-retro-bg opacity-[0.03] animate-pan-retro z-0"></div>
+
+        {/* Violet Ambient Hues */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <div
+            className="absolute -top-[20%] -left-[10%] w-[600px] h-[600px] rounded-full blur-[120px] opacity-30"
+            style={{ backgroundColor: colors.deepViolet }}
+          />
+          <div
+            className="absolute bottom-[10%] -right-[10%] w-[500px] h-[500px] rounded-full blur-[120px] opacity-10"
+            style={{ backgroundColor: colors.neonViolet }}
+          />
+        </div>
 
         <div className="max-w-4xl mx-auto relative z-10">
-          <div className="text-center mb-16 reveal-on-scroll">
+          <div className="text-center mb-16">
             <h2
               className="text-2xl md:text-4xl font-pixel mb-6 animate-float-slow"
               style={{ color: colors.heroicGold }}
@@ -353,14 +355,14 @@ export default function OathboundWebsite() {
             />
           </div>
 
-          <div className="reveal-on-scroll" style={{ transitionDelay: "0.2s" }}>
+          <div>
             <div
               className="bg-black/80 backdrop-blur-sm border rounded-lg p-10 space-y-8 shadow-2xl relative overflow-hidden transition-transform duration-500 hover:scale-[1.01]"
               style={{ borderColor: colors.stoneGrey }}
             >
               <div
                 className="absolute top-0 left-0 w-2 h-full"
-                style={{ backgroundColor: colors.maliciousRed }}
+                style={{ backgroundColor: colors.neonViolet }}
               ></div>
 
               <p className="text-gray-200 leading-loose text-xs md:text-sm tracking-wide">
@@ -374,8 +376,8 @@ export default function OathboundWebsite() {
 
               <p className="text-gray-200 leading-loose text-xs md:text-sm tracking-wide">
                 <span
-                  className="animate-pulse"
-                  style={{ color: colors.maliciousRed }}
+                  className="animate-pulse font-bold"
+                  style={{ color: "#f0abfc" }} // Light fuchsia/violet for emphasis
                 >
                   Lord Malakor, the Vampire Lord of the Eternal Night,
                 </span>{" "}
@@ -403,11 +405,19 @@ export default function OathboundWebsite() {
       {/* Heroes Section */}
       <section
         id="heroes"
-        className="relative py-24 px-6 border-t border-white/10"
+        className="relative py-24 px-6 border-t border-white/10 overflow-hidden"
         style={{ backgroundColor: colors.obsidian }}
       >
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16 reveal-on-scroll">
+        {/* Violet Ambient Hues */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <div
+            className="absolute top-[20%] left-1/2 transform -translate-x-1/2 w-[1000px] h-[800px] rounded-full blur-[150px] opacity-20"
+            style={{ backgroundColor: colors.bruisedPurple }}
+          />
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-16">
             <h2
               className="text-2xl md:text-4xl font-pixel mb-8 animate-float-slow"
               style={{ color: colors.heroicGold }}
@@ -429,12 +439,9 @@ export default function OathboundWebsite() {
             {heroes.map((hero, idx) => (
               <div
                 key={idx}
-                className="group cursor-pointer reveal-on-scroll"
+                className="group cursor-pointer"
                 onMouseEnter={() => setHoveredHero(idx)}
                 onMouseLeave={() => setHoveredHero(null)}
-                style={{
-                  transitionDelay: `${idx * 0.15}s`, // Cascading slide up
-                }}
               >
                 <div
                   className="relative rounded-lg p-6 transition-all duration-300 h-full flex flex-col items-center text-center border backdrop-blur-sm hover:scale-105"
@@ -446,10 +453,6 @@ export default function OathboundWebsite() {
                       hoveredHero === idx
                         ? `0 0 30px ${hero.borderColor}60`
                         : "none",
-                    transform:
-                      hoveredHero === idx
-                        ? "translateY(-12px)"
-                        : "translateY(0)",
                   }}
                 >
                   {/* Dynamic Individual Image Render for Character Icons */}
@@ -511,20 +514,32 @@ export default function OathboundWebsite() {
         id="villain"
         className="relative py-24 px-6 border-t border-white/10 overflow-hidden"
       >
-        <div className="absolute inset-0 pixel-retro-bg opacity-10 animate-pan-retro"></div>
+        <div className="absolute inset-0 pixel-retro-bg opacity-10 animate-pan-retro z-0"></div>
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 z-0"
           style={{
-            background: `linear-gradient(to top, ${colors.bruisedPurple}, ${colors.obsidian} 80%)`,
+            background: `linear-gradient(to top, ${colors.deepViolet}, ${colors.obsidian} 80%)`,
           }}
         />
 
+        {/* Ambient Hues */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <div
+            className="absolute top-[30%] -left-[20%] w-[600px] h-[600px] rounded-full blur-[120px] opacity-10"
+            style={{ backgroundColor: colors.maliciousRed }}
+          />
+          <div
+            className="absolute bottom-[10%] -right-[10%] w-[500px] h-[500px] rounded-full blur-[120px] opacity-10"
+            style={{ backgroundColor: colors.neonViolet }}
+          />
+        </div>
+
         <div className="max-w-6xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Antagonist Details */}
-          <div className="reveal-on-scroll" style={{ transitionDelay: "0.1s" }}>
+          <div>
             <div
-              className="space-y-8 bg-black/80 backdrop-blur p-10 rounded border hover:border-red-500/60 transition-colors duration-500"
-              style={{ borderColor: colors.maliciousRed + "40" }}
+              className="space-y-8 bg-black/80 backdrop-blur p-10 rounded border hover:border-fuchsia-500/60 transition-colors duration-500"
+              style={{ borderColor: colors.deepViolet }}
             >
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6 text-center sm:text-left">
                 {/* Render the Custom All-Seeing Eye Image */}
@@ -559,7 +574,7 @@ export default function OathboundWebsite() {
                 <li className="flex items-start gap-3 hover:translate-x-2 transition-transform">
                   <span
                     className="animate-pulse"
-                    style={{ color: colors.maliciousRed }}
+                    style={{ color: colors.neonViolet }}
                   >
                     •
                   </span>
@@ -573,7 +588,7 @@ export default function OathboundWebsite() {
                 <li className="flex items-start gap-3 hover:translate-x-2 transition-transform">
                   <span
                     className="animate-pulse"
-                    style={{ color: colors.maliciousRed }}
+                    style={{ color: colors.neonViolet }}
                   >
                     •
                   </span>
@@ -588,7 +603,7 @@ export default function OathboundWebsite() {
           </div>
 
           {/* The Squire Details */}
-          <div className="reveal-on-scroll" style={{ transitionDelay: "0.3s" }}>
+          <div>
             <div
               className="space-y-8 bg-black/80 backdrop-blur p-10 rounded border hover:border-yellow-400/60 transition-colors duration-500"
               style={{ borderColor: colors.heroicGold + "40" }}
@@ -635,11 +650,23 @@ export default function OathboundWebsite() {
       {/* How to Play Section */}
       <section
         id="how-to-play"
-        className="relative py-24 px-6 border-t border-white/10"
+        className="relative py-24 px-6 border-t border-white/10 overflow-hidden"
         style={{ backgroundColor: colors.obsidian }}
       >
+        {/* Violet Ambient Hues */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <div
+            className="absolute top-[10%] -right-[10%] w-[500px] h-[500px] rounded-full blur-[120px] opacity-10"
+            style={{ backgroundColor: colors.heroicGold }}
+          />
+          <div
+            className="absolute bottom-[-10%] -left-[10%] w-[400px] h-[400px] rounded-full blur-[120px] opacity-30"
+            style={{ backgroundColor: colors.deepViolet }}
+          />
+        </div>
+
         <div className="max-w-4xl mx-auto relative z-10">
-          <div className="text-center mb-16 reveal-on-scroll">
+          <div className="text-center mb-16">
             <h2
               className="text-2xl md:text-4xl font-pixel mb-6 animate-float-slow"
               style={{ color: colors.heroicGold }}
@@ -654,9 +681,9 @@ export default function OathboundWebsite() {
             />
           </div>
 
-          <div className="reveal-on-scroll" style={{ transitionDelay: "0.2s" }}>
+          <div>
             <div
-              className="bg-black/60 backdrop-blur-sm border rounded-lg overflow-hidden shadow-2xl hover:shadow-yellow-500/10 transition-shadow duration-500"
+              className="bg-black/60 backdrop-blur-sm border rounded-lg overflow-hidden shadow-2xl hover:shadow-fuchsia-500/20 transition-shadow duration-500"
               style={{ borderColor: colors.stoneGrey }}
             >
               <div className="grid grid-cols-1 md:grid-cols-2">
@@ -685,10 +712,7 @@ export default function OathboundWebsite() {
             </div>
           </div>
 
-          <div
-            className="mt-16 text-center reveal-on-scroll"
-            style={{ transitionDelay: "0.4s" }}
-          >
+          <div className="mt-16 text-center">
             <button
               onClick={() => setIsPlaying(true)}
               className="px-10 py-5 font-pixel text-[10px] md:text-xs tracking-widest rounded border transition-all duration-300 uppercase hover:bg-white/10 hover:scale-105"
@@ -747,20 +771,6 @@ export default function OathboundWebsite() {
           image-rendering: pixelated;
           image-rendering: -moz-crisp-edges;
           image-rendering: crisp-edges;
-        }
-
-        /* Epic Slide-Up On-Scroll Animations */
-        .reveal-on-scroll {
-          opacity: 0;
-          transform: translateY(60px);
-          /* Using an epic cubic-bezier curve: fast shoot up, very slow settle */
-          transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: opacity, transform;
-        }
-
-        .reveal-on-scroll.is-revealed {
-          opacity: 1;
-          transform: translateY(0);
         }
 
         /* Retro 16-bit checkerboard / dither pattern */
