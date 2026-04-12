@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ChevronDown, Lock, Play, X, Keyboard } from "lucide-react";
+import { ChevronDown, Lock, Play, X } from "lucide-react";
 
 export default function OathboundWebsite() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -143,28 +143,13 @@ export default function OathboundWebsite() {
                 <X className="w-6 h-6" />
               </button>
             </div>
-            {/* Fake Game Canvas */}
-            <div className="flex-1 pixel-retro-bg animate-pan-retro flex flex-col items-center justify-center relative overflow-hidden">
-              <div className="absolute inset-0 pixel-stars opacity-50 animate-pan-stars"></div>
-              <h2
-                className="text-2xl md:text-5xl font-pixel mb-8 z-10 animate-pulse"
-                style={{
-                  color: colors.heroicGold,
-                  textShadow: `4px 4px 0px ${colors.neonViolet}`,
-                }}
-              >
-                INSERT COIN
-              </h2>
-              <div className="flex gap-4 z-10 animate-float-slow">
-                <div
-                  className="px-6 py-3 bg-black/50 border rounded font-pixel text-[10px] text-center leading-loose"
-                  style={{ borderColor: colors.stoneGrey }}
-                >
-                  <Keyboard className="w-8 h-8 mx-auto mb-4 text-gray-400" />
-                  PRESS ENTER TO START
-                </div>
-              </div>
-            </div>
+            {/* Real Game iframe */}
+            <iframe
+              src="/game/index.html"
+              className="flex-1 w-full border-0"
+              title="Oathbound: The Ten Trials"
+              allowFullScreen
+            />
           </div>
         </div>
       )}
@@ -231,8 +216,7 @@ export default function OathboundWebsite() {
         <div
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat pixelated"
           style={{
-            backgroundImage:
-              "url('/bg.jpg')",
+            backgroundImage: "url('/bg.jpg')",
           }}
         />
 
@@ -748,7 +732,8 @@ export default function OathboundWebsite() {
           </p>
           <div className="pt-8 border-t border-white/10 text-[8px] text-gray-600 leading-loose">
             <p>
-              © 2026 Oathbound: The Ten Trials. Adhirath, Afsheen, Anagha & Avantika.
+              © 2026 Oathbound: The Ten Trials. Adhirath, Afsheen, Anagha &
+              Avantika.
             </p>
           </div>
         </div>
