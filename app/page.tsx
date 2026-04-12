@@ -121,13 +121,15 @@ export default function OathboundWebsite() {
     >
       {/* Game Overlay Modal */}
       {isPlaying && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md animate-fade-in">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md animate-fade-in p-4">
+          {/* UPDATE 1: The outer box width */}
           <div
-            className="w-full max-w-5xl h-[80vh] border-4 rounded-xl flex flex-col overflow-hidden shadow-2xl relative"
+            className="w-[960px] max-w-full border-4 rounded-xl overflow-hidden shadow-2xl relative bg-black"
             style={{ borderColor: colors.heroicGold }}
           >
+            {/* Title Bar */}
             <div
-              className="bg-zinc-900 p-4 border-b flex justify-between items-center"
+              className="bg-zinc-900 p-3 border-b flex justify-between items-center w-full"
               style={{ borderColor: colors.heroicGold }}
             >
               <div
@@ -140,13 +142,14 @@ export default function OathboundWebsite() {
                 onClick={() => setIsPlaying(false)}
                 className="hover:text-red-500 transition-colors"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5" />
               </button>
             </div>
-            {/* Real Game iframe */}
+
+            {/* UPDATE 2: The iframe width and height */}
             <iframe
               src="/game/index.html"
-              className="flex-1 w-full border-0"
+              className="w-[960px] h-[552px] max-w-full border-0 block bg-black"
               title="Oathbound: The Ten Trials"
               allowFullScreen
             />
@@ -377,7 +380,7 @@ export default function OathboundWebsite() {
                 than the last, designed to break the spirit and shatter the
                 body.{" "}
                 <span style={{ color: colors.heroicGold }}>
-                  Will you answer the call?
+                  Will you answer the call?{" "}
                 </span>
                 Will you face the darkness and emerge victorious?
               </p>
