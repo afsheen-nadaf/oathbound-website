@@ -708,7 +708,7 @@ export default function OathboundWebsite() {
                 borderColor: colors.heroicGold,
               }}
             >
-              LAUNCH GAME DEMO
+              LAUNCH GAME
             </button>
           </div>
         </div>
