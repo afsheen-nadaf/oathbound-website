@@ -1,12 +1,38 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown, Lock, Play, X } from "lucide-react";
 
 export default function OathboundWebsite() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredHero, setHoveredHero] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  // NEW: Reference to control the game iframe
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // NEW: Effect to trap focus inside the game when playing
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Tab") {
+        e.preventDefault(); // Stops the browser from highlighting nav links
+        iframeRef.current?.focus(); // Pushes focus right back to the game
+      }
+    };
+
+    if (isPlaying) {
+      window.addEventListener("keydown", handleKeyDown);
+
+      // Auto-focus the iframe when the modal opens
+      setTimeout(() => {
+        iframeRef.current?.focus();
+      }, 100);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isPlaying]);
 
   useEffect(() => {
     // Navbar Scroll State
@@ -122,7 +148,6 @@ export default function OathboundWebsite() {
       {/* Game Overlay Modal */}
       {isPlaying && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md animate-fade-in p-4">
-          {/* UPDATE 1: The outer box width */}
           <div
             className="w-[960px] max-w-full border-4 rounded-xl overflow-hidden shadow-2xl relative bg-black"
             style={{ borderColor: colors.heroicGold }}
@@ -146,10 +171,10 @@ export default function OathboundWebsite() {
               </button>
             </div>
 
-            {/* UPDATE 2: The iframe width and height */}
             <iframe
+              ref={iframeRef} // <-- Attached the ref here
               src="/game/index.html"
-              className="w-[960px] h-[552px] max-w-full border-0 block bg-black"
+              className="w-[960px] h-[552px] max-w-full border-0 block bg-black outline-none" // <-- Added outline-none
               title="Oathbound: The Ten Trials"
               allowFullScreen
             />
@@ -223,16 +248,16 @@ export default function OathboundWebsite() {
           }}
         />
 
-        {/* Deep Warm Violet Overlay to neutralize redness and shift to a magical warm purple hue */}
+        {/* Deep Warm Violet Overlay */}
         <div className="absolute inset-0 bg-[#4a044e]/70 z-0 mix-blend-multiply"></div>
-        {/* Secondary dark overlay to keep text readable */}
+        {/* Secondary dark overlay */}
         <div className="absolute inset-0 bg-black/50 z-0"></div>
 
-        {/* Dynamic Star and Retro overlays lowered in opacity */}
+        {/* Dynamic Star and Retro overlays */}
         <div className="absolute inset-0 pixel-stars opacity-30 animate-pan-stars z-0"></div>
         <div className="absolute inset-0 pixel-retro-bg opacity-10 animate-pan-retro z-0"></div>
 
-        {/* The Ominous Glow - Neon Warm Violet glow */}
+        {/* The Ominous Glow */}
         <div
           className="absolute top-1/4 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] rounded-full blur-[120px] animate-pulse-slow opacity-40 z-0"
           style={{ backgroundColor: colors.neonViolet }}
@@ -364,7 +389,7 @@ export default function OathboundWebsite() {
               <p className="text-gray-200 leading-loose text-xs md:text-sm tracking-wide">
                 <span
                   className="animate-pulse font-bold"
-                  style={{ color: "#f0abfc" }} // Light fuchsia/violet for emphasis
+                  style={{ color: "#f0abfc" }}
                 >
                   Lord Malakor, the Vampire Lord of the Eternal Night,
                 </span>{" "}
@@ -442,7 +467,6 @@ export default function OathboundWebsite() {
                         : "none",
                   }}
                 >
-                  {/* Dynamic Individual Image Render for Character Icons */}
                   <div
                     className="mb-6 p-2 rounded bg-black/60 shadow-lg animate-float transition-transform group-hover:scale-110 group-hover:animate-none"
                     style={{ border: `1px solid ${hero.borderColor}` }}
@@ -529,7 +553,6 @@ export default function OathboundWebsite() {
               style={{ borderColor: colors.deepViolet }}
             >
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6 text-center sm:text-left">
-                {/* Render the Custom All-Seeing Eye Image */}
                 <div
                   className="w-20 h-20 rounded-lg bg-black pixelated shrink-0 animate-float"
                   style={{
