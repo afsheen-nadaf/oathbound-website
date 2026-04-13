@@ -8,22 +8,19 @@ export default function OathboundWebsite() {
   const [hoveredHero, setHoveredHero] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // NEW: Reference to control the game iframe
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  // NEW: Effect to trap focus inside the game when playing
+  // Parent window focus trap (catches Tab if focus is accidentally on the website background)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Tab") {
-        e.preventDefault(); // Stops the browser from highlighting nav links
-        iframeRef.current?.focus(); // Pushes focus right back to the game
+      if (e.key === "Tab" && isPlaying) {
+        e.preventDefault();
+        iframeRef.current?.focus();
       }
     };
 
     if (isPlaying) {
       window.addEventListener("keydown", handleKeyDown);
-
-      // Auto-focus the iframe when the modal opens
       setTimeout(() => {
         iframeRef.current?.focus();
       }, 100);
@@ -34,20 +31,32 @@ export default function OathboundWebsite() {
     };
   }, [isPlaying]);
 
+  // NEW: Iframe internal focus trap (catches Tab when focus is INSIDE the game)
+  const handleIframeLoad = () => {
+    if (iframeRef.current && iframeRef.current.contentWindow) {
+      // 1. Force focus onto the game the moment it finishes loading
+      iframeRef.current.focus();
+
+      // 2. Inject an event listener directly into the game's internal window
+      iframeRef.current.contentWindow.addEventListener("keydown", (e: any) => {
+        if (e.key === "Tab") {
+          e.preventDefault(); // Kills the escape behavior instantly
+        }
+      });
+    }
+  };
+
   useEffect(() => {
-    // Navbar Scroll State
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
 
-    // Cleanup listener on unmount
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
-  // Updated Heroes array with individual image URLs
   const heroes = [
     {
       name: "Seraphim",
@@ -132,12 +141,12 @@ export default function OathboundWebsite() {
 
   const colors = {
     obsidian: "#000000",
-    bruisedPurple: "#581c87", // Warmed up to a fuchsia/plum dark tone
-    maliciousRed: "#FF0000", // Kept primarily for the villain's lore specifically
+    bruisedPurple: "#581c87",
+    maliciousRed: "#FF0000",
     stoneGrey: "#4F4F4F",
     heroicGold: "#FFD700",
-    neonViolet: "#d946ef", // Warm fuchsia/magenta glow
-    deepViolet: "#4a044e", // Deep warm plum overlay
+    neonViolet: "#d946ef",
+    deepViolet: "#4a044e",
   };
 
   return (
@@ -172,9 +181,10 @@ export default function OathboundWebsite() {
             </div>
 
             <iframe
-              ref={iframeRef} // <-- Attached the ref here
+              ref={iframeRef}
+              onLoad={handleIframeLoad} // <-- Attached the new injection handler here
               src="/game/index.html"
-              className="w-[960px] h-[552px] max-w-full border-0 block bg-black outline-none" // <-- Added outline-none
+              className="w-[960px] h-[552px] max-w-full border-0 block bg-black outline-none"
               title="Oathbound: The Ten Trials"
               allowFullScreen
             />
@@ -240,7 +250,6 @@ export default function OathboundWebsite() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pt-20 overflow-hidden">
-        {/* Custom Throne Room Image Background */}
         <div
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat pixelated"
           style={{
@@ -248,16 +257,12 @@ export default function OathboundWebsite() {
           }}
         />
 
-        {/* Deep Warm Violet Overlay */}
         <div className="absolute inset-0 bg-[#4a044e]/70 z-0 mix-blend-multiply"></div>
-        {/* Secondary dark overlay */}
         <div className="absolute inset-0 bg-black/50 z-0"></div>
 
-        {/* Dynamic Star and Retro overlays */}
         <div className="absolute inset-0 pixel-stars opacity-30 animate-pan-stars z-0"></div>
         <div className="absolute inset-0 pixel-retro-bg opacity-10 animate-pan-retro z-0"></div>
 
-        {/* The Ominous Glow */}
         <div
           className="absolute top-1/4 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] rounded-full blur-[120px] animate-pulse-slow opacity-40 z-0"
           style={{ backgroundColor: colors.neonViolet }}
@@ -339,7 +344,6 @@ export default function OathboundWebsite() {
       >
         <div className="absolute inset-0 pixel-retro-bg opacity-[0.03] animate-pan-retro z-0"></div>
 
-        {/* Violet Ambient Hues */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
           <div
             className="absolute -top-[20%] -left-[10%] w-[600px] h-[600px] rounded-full blur-[120px] opacity-30"
@@ -420,7 +424,6 @@ export default function OathboundWebsite() {
         className="relative py-24 px-6 border-t border-white/10 overflow-hidden"
         style={{ backgroundColor: colors.obsidian }}
       >
-        {/* Violet Ambient Hues */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
           <div
             className="absolute top-[20%] left-1/2 transform -translate-x-1/2 w-[1000px] h-[800px] rounded-full blur-[150px] opacity-20"
@@ -533,7 +536,6 @@ export default function OathboundWebsite() {
           }}
         />
 
-        {/* Ambient Hues */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
           <div
             className="absolute top-[30%] -left-[20%] w-[600px] h-[600px] rounded-full blur-[120px] opacity-10"
@@ -546,7 +548,6 @@ export default function OathboundWebsite() {
         </div>
 
         <div className="max-w-6xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Antagonist Details */}
           <div>
             <div
               className="space-y-8 bg-black/80 backdrop-blur p-10 rounded border hover:border-fuchsia-500/60 transition-colors duration-500"
@@ -612,7 +613,6 @@ export default function OathboundWebsite() {
             </div>
           </div>
 
-          {/* The Squire Details */}
           <div>
             <div
               className="space-y-8 bg-black/80 backdrop-blur p-10 rounded border hover:border-yellow-400/60 transition-colors duration-500"
@@ -663,7 +663,6 @@ export default function OathboundWebsite() {
         className="relative py-24 px-6 border-t border-white/10 overflow-hidden"
         style={{ backgroundColor: colors.obsidian }}
       >
-        {/* Violet Ambient Hues */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
           <div
             className="absolute top-[10%] -right-[10%] w-[500px] h-[500px] rounded-full blur-[120px] opacity-10"
@@ -769,7 +768,6 @@ export default function OathboundWebsite() {
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        /* Importing only the retro pixel font required by CIE 2 Doc */
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
         * {
@@ -777,14 +775,12 @@ export default function OathboundWebsite() {
           font-family: 'Press Start 2P', cursive;
         }
 
-        /* Prevents blurriness when scaling up small pixel art */
         .pixelated {
           image-rendering: pixelated;
           image-rendering: -moz-crisp-edges;
           image-rendering: crisp-edges;
         }
 
-        /* Retro 16-bit checkerboard / dither pattern */
         .pixel-retro-bg {
           background-image: 
             linear-gradient(45deg, #2E0854 25%, transparent 25%, transparent 75%, #2E0854 75%, #2E0854), 
@@ -793,7 +789,6 @@ export default function OathboundWebsite() {
           background-position: 0 0, 4px 4px;
         }
 
-        /* 8-bit starfield pattern */
         .pixel-stars {
           background-image: 
             radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
@@ -806,7 +801,6 @@ export default function OathboundWebsite() {
           background-size: 200px 200px;
         }
 
-        /* Basic Animations */
         @keyframes fade-in {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
@@ -817,7 +811,6 @@ export default function OathboundWebsite() {
           50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.05); }
         }
 
-        /* New Dynamic Animations */
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-8px); }
@@ -838,7 +831,6 @@ export default function OathboundWebsite() {
           to { background-position: 8px 8px, 12px 12px; }
         }
 
-        /* Animation Classes */
         .animate-fade-in {
           animation: fade-in 1s ease-out forwards;
         }
