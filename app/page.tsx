@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown, Lock, Play, X } from "lucide-react";
 
-export default function OathboundWebsite() {
+export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredHero, setHoveredHero] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -204,10 +204,15 @@ export default function OathboundWebsite() {
       >
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div
-            className="text-sm md:text-lg font-pixel font-bold tracking-tighter cursor-pointer hover:animate-pulse"
+            className="text-sm md:text-lg font-pixel font-bold tracking-tighter cursor-pointer hover:animate-pulse flex items-center gap-2 md:gap-3"
             style={{ color: colors.heroicGold }}
           >
-            OATHBOUND
+            <img
+              src="/favicon.ico"
+              alt="Oathbound Logo"
+              className="w-10 h-10 md:w-12 md:h-12 pixelated inline-block"
+            />
+            <span>OATHBOUND</span>
           </div>
           <div className="hidden md:flex gap-8 text-[10px] tracking-widest uppercase">
             <a
