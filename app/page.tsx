@@ -134,9 +134,7 @@ export default function App() {
     { keys: "Arrow Keys / A, D", action: "Move Left / Right" },
     { keys: "Space / W", action: "Jump" },
     { keys: "Z / J", action: "Primary Attack" },
-    { keys: "X / K", action: "Special Ability" },
     { keys: "TAB", action: "Swap Hero" },
-    { keys: "ENTER", action: "Pause Game" },
   ];
 
   const colors = {
